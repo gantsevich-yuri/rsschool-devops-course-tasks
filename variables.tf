@@ -7,13 +7,13 @@ variable "aws_region" {
 variable "bucket_name" {
   description = "My S3 bucket for Terraform state"
   type        = string
-  default     = "my_terraform_state_bucket"
+  default     = "my-terraform-state-bucket"
 }
 
 variable "dynamodb_table_name" {
   description = "DynamoDB table"
   type        = string
-  default     = "my_terraform_state_table"
+  default     = "my-terraform-state-table"
 }
 
 variable "dynamodb_hash_key" {
