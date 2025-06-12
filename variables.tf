@@ -5,7 +5,7 @@ variable "aws_region" {
 }
 
 variable "bucket_name" {
-  description = "S3 bucket for Terraform state"
+  description = "My S3 bucket for Terraform state"
   type        = string
   default     = "my_terraform_state_bucket"
 }
