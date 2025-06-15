@@ -147,6 +147,7 @@ jobs:
 ## Author
 
 This project is part of the [RS School DevOps Course](https://github.com/rolling-scopes-school/tasks/tree/master/devops) :fire:
+
 Task by: [@gantsevich-yuri](https://github.com/gantsevich-yuri)
 
 
