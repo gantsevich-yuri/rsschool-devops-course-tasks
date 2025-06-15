@@ -10,11 +10,9 @@ This project is part of the RS School DevOps course. It demonstrates setting up 
 - GitHub account
 - Git installed
 
-## Install AWS CLI:
-Instructions: https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
-
-## 1. Install Terraform:
-Instructions: https://developer.hashicorp.com/terraform/downloads
+## 1. Install AWS CLI and Terraform:
+Instructions AWS CLI: https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
+Instructions Terraform: https://developer.hashicorp.com/terraform/downloads
 
 ## 2. Create IAM User and Configure MFA:
 
@@ -76,6 +74,7 @@ Best practices link:
 
 
 ## 7. Configure an Identity Provider and Trust policies for Github Actions(Additional task)
+Documentation:
 - [IAM roles terms and concepts](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles.html#id_roles_terms-and-concepts)
 - [Github tutorial](https://docs.github.com/en/actions/security-for-github-actions/security-hardening-your-deployments/configuring-openid-connect-in-amazon-web-services)
 - [AWS documentation on OIDC providers](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-idp_oidc.html#idp_oidc_Create_GitHub)
@@ -121,6 +120,7 @@ jobs:
           AWS_REGION: eu-central-1
 ```
 - `terraform-apply`: Run `terraform apply`
+```
 jobs:
   terraform-apply:
     runs-on: ubuntu-latest
@@ -142,10 +142,11 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: eu-central-1
+```
 
 ## Author
 
-This project is part of the [RS School DevOps Course](https://github.com/rolling-scopes-school/tasks/tree/master/devops)  
+This project is part of the [RS School DevOps Course](https://github.com/rolling-scopes-school/tasks/tree/master/devops) :fire:
 Task by: [@gantsevich-yuri](https://github.com/gantsevich-yuri)
 
 
