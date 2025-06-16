@@ -19,5 +19,5 @@ variable "dynamodb_table_name" {
 variable "dynamodb_hash_key" {
   description = "Hash key for the DynamoDB"
   type        = string
-  default     = "my-terrstate-hash-00100"
+  default     = "LockID"
 }

@@ -26,11 +26,6 @@ Instructions Terraform: https://developer.hashicorp.com/terraform/downloads
     - AmazonSQSFullAccess
     - AmazonEventBridgeFullAccess
 3. Configure MFA for both root and new user.
-
-MFA for user "fox":
-
-![mfa_fox.png](mfa_fox.png)
-
 4. Generate Access Key and Secret Key.
 
 ## 3. Configure AWS CLI:
