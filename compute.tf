@@ -11,19 +11,19 @@ data "aws_ami" "ubuntu" {
     values = ["hvm"]
   }
 
-  owners = ["099720109477"] 
+  owners = ["099720109477"]
 }
 
 resource "aws_instance" "bastion" {
   ami                         = data.aws_ami.ubuntu.id
-  instance_type               = "t3.micro"          
-  subnet_id                   = aws_subnet.public1.id  
+  instance_type               = "t3.micro"
+  subnet_id                   = aws_subnet.public1.id
   security_groups             = [aws_security_group.wan.id]
-  associate_public_ip_address = true 
+  associate_public_ip_address = true
   source_dest_check           = false
 
-  key_name = "aws-ubuntu-home"   
-  
+  key_name = "aws-ubuntu-home"
+
   user_data = <<-EOF
               #!/bin/bash
               apt update -y
@@ -41,12 +41,12 @@ resource "aws_instance" "bastion" {
 
 resource "aws_instance" "private_vm1" {
   ami                         = data.aws_ami.ubuntu.id
-  instance_type               = "t3.micro"          
-  subnet_id                   = aws_subnet.private1.id  
+  instance_type               = "t3.micro"
+  subnet_id                   = aws_subnet.private1.id
   security_groups             = [aws_security_group.lan.id]
   associate_public_ip_address = false
 
-  key_name = "aws-ubuntu-home"   
+  key_name = "aws-ubuntu-home"
 
   tags = {
     Name = "vm1"

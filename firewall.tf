@@ -6,33 +6,39 @@ resource "aws_security_group" "wan" {
 }
 
 # Allow only inbound ssh traffic from WAN
-resource "aws_vpc_security_group_ingress_rule" "allow_ssh" {
-  security_group_id = aws_security_group.wan.id
-  cidr_ipv4         = "0.0.0.0/0"
-  ip_protocol       = "tcp"
+resource "aws_security_group_rule" "wan_ssh_in" {
+  type              = "ingress"
   from_port         = 22
   to_port           = 22
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+  security_group_id = aws_security_group.wan.id
 }
 
-# Create Security Group for LAN net (internal VMs)
+# Create Security Group for LAN net
 resource "aws_security_group" "lan" {
   name        = "lan_sg"
-  description = "Allow all internal inbound traffic and all outbound traffic"
+  description = "Allow all internal and all outbound traffic"
   vpc_id      = aws_vpc.devnet.id
 }
 
-# Allow all traffic in LAN
-resource "aws_vpc_security_group_ingress_rule" "lan_to_lan" {
+# Create Security Group for LAN net (internal VMs)
+resource "aws_security_group_rule" "lan_internal" {
+  type                     = "ingress"
+  description              = "Allow all traffic from LAN security group"
+  from_port                = 0
+  to_port                  = 0
+  protocol                 = "-1"
   security_group_id        = aws_security_group.lan.id
-  ip_protocol              = "-1"
   source_security_group_id = aws_security_group.lan.id
 }
 
-# Allow ssh traffic in LAN from jump host
-resource "aws_vpc_security_group_ingress_rule" "wan_to_lan" {
-  security_group_id        = aws_security_group.lan.id
-  ip_protocol              = "tcp"
+# Create Security Group for WAN to LAN access
+resource "aws_security_group_rule" "wan_to_lan_ssh" {
+  type                     = "ingress"
   from_port                = 22
   to_port                  = 22
+  protocol                 = "tcp"
+  security_group_id        = aws_security_group.lan.id
   source_security_group_id = aws_security_group.wan.id
 }
