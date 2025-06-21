@@ -10,8 +10,8 @@ resource "aws_vpc_security_group_ingress_rule" "allow_ssh" {
   security_group_id = aws_security_group.wan.id
   cidr_ipv4         = "0.0.0.0/0"
   ip_protocol       = "tcp"
-  from_port                = 22
-  to_port                  = 22
+  from_port         = 22
+  to_port           = 22
 }
 
 # Create Security Group for LAN net (internal VMs)
