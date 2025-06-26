@@ -38,6 +38,7 @@ In this task, you will write Terraform code to configure the basic networking in
 **Run code**
 ```
 terraform init
+terraform fmt
 terraform validate
 terraform plan
 terraform apply
