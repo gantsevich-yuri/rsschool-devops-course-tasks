@@ -35,6 +35,17 @@ In this task, you will write Terraform code to configure the basic networking in
      - Cheaper way: configure a NAT instance in the public subnet
    - Document the infrastructure setup and usage in a README file.
 
+**Run code**
+```
+terraform init
+terraform validate
+terraform plan
+terraform apply
+```
+**Connect to Bastion Host**
+```
+ssh -i ~/.ssh/your_key.pem username@bastion_public_ip
+```
 ## Author
 
 This project is part of the [RS School DevOps Course](https://github.com/rolling-scopes-school/tasks/tree/master/devops) :fire:
