@@ -13,13 +13,13 @@ variable "azs" {
 variable "bucket_name" {
   description = "My S3 bucket for Terraform state"
   type        = string
-  default     = "my-terraform-state-bucket-00100"
+  default     = "my-terraform-state-bucket-00101"
 }
 
 variable "dynamodb_table_name" {
   description = "DynamoDB table"
   type        = string
-  default     = "my-terraform-state-table-00100"
+  default     = "my-terraform-state-table-00101"
 }
 
 variable "dynamodb_hash_key" {
