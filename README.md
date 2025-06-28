@@ -1,6 +1,7 @@
 # RS School DevOps course :fire:
 
-## [Task: K8s Cluster Configuration and Creation](https://github.com/rolling-scopes-school/tasks/blob/master/devops/modules/2_cluster-configuration/task_3.md)
+## Task
+[K8s Cluster Configuration and Creation](https://github.com/rolling-scopes-school/tasks/blob/master/devops/modules/2_cluster-configuration/task_3.md)
 
 **Deploy pod with Nginx app**
 ```
