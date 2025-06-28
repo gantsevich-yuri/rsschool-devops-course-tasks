@@ -2,7 +2,7 @@
 
 ## [Task: K8s Cluster Configuration and Creation](https://github.com/rolling-scopes-school/tasks/blob/master/devops/modules/2_cluster-configuration/task_3.md)
 
-Use installing packages from terraform code (preferred) or manual installation:
+**Use installing packages from terraform code (preferred) or manual installation:**
 
 **Manual install k3s as master**
 ```
@@ -30,7 +30,7 @@ kubectl version --client
 **Access to Kubernetes cluster from bastion**
 - mkdir ~/.kube
 - ssh <ip_k8s-master> 'sudo cat /etc/rancher/k3s/k3s.yaml' > ~/.kube/config_k3s
-- ssh ssh -fN -L 6443:<ip_k8s-master>:6443 username_k8s-master@ip_k8s-master    # set ssh tunnel
+- ssh -fN -L 6443:<ip_k8s-master>:6443 username_k8s-master@ip_k8s-master    # set ssh tunnel
 - KUBECONFIG=~/.kube/config_k3s kubectl get nodes
 
 **Access to Kubernetes cluster from local machine**
