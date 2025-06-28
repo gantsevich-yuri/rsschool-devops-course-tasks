@@ -4,20 +4,26 @@ variable "aws_region" {
   default     = "eu-central-1"
 }
 
-variable "bucket_name" {
-  description = "My S3 bucket for Terraform state"
-  type        = string
-  default     = "my-terraform-state-bucket-00100"
+variable "azs" {
+  type        = list(string)
+  description = "List of availability zones for the region"
+  default     = ["eu-central-1a", "eu-central-1b"]
 }
 
-variable "dynamodb_table_name" {
-  description = "DynamoDB table"
+variable "vpc_cidr" {
   type        = string
-  default     = "my-terraform-state-table-00100"
+  description = "CIDR block for the VPC"
+  default     = "10.0.0.0/16"
 }
 
-variable "dynamodb_hash_key" {
-  description = "Hash key for the DynamoDB"
-  type        = string
-  default     = "LockID"
+variable "public_subnet_cidrs" {
+  type        = list(string)
+  description = "List of CIDR blocks for public subnets"
+  default     = ["10.0.10.0/24", "10.0.20.0/24"]
+}
+
+variable "private_subnet_cidrs" {
+  type        = list(string)
+  description = "List of CIDR blocks for private subnets"
+  default     = ["10.0.11.0/24", "10.0.21.0/24"]
 }
