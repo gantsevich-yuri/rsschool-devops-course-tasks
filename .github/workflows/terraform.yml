@@ -1,4 +1,4 @@
-name: 'My workflow task1'
+name: 'My workflow task3'
 
 on:
   push:
@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [ "main" ]
   workflow_dispatch:
+
+env:
+  TF_VAR_k3s_token: ${{ secrets.K3S_TOKEN }}
 
 jobs:
   terraform-check:
