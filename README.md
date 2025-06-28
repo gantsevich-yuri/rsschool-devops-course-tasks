@@ -1,4 +1,4 @@
-# RS School DevOps course
+# RS School DevOps course :fire:
 
 ## The goal
 
