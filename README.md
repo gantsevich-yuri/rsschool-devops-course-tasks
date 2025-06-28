@@ -1,7 +1,8 @@
-# RS School DevOps course :fire:
+## Task :heavy_exclamation_mark:
 
-## Task
 [K8s Cluster Configuration and Creation](https://github.com/rolling-scopes-school/tasks/blob/master/devops/modules/2_cluster-configuration/task_3.md)
+
+## Deploy :fast_forward:
 
 **Deploy pod with Nginx app**
 ```
@@ -48,5 +49,6 @@ kubectl get nodes
 kubectl get pods -A
 ```
 
-## Result
+## Result :white_check_mark:
+
 [K8s Cluster Configuration and Creation in AWS](https://github.com/gantsevich-yuri/rsschool-devops-course-tasks/pull/3)
