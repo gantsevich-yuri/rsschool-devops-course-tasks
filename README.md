@@ -66,15 +66,15 @@ Part 2 (Create HELM chart)
 
 Part 3 (Create Pipeline)
 
-    Create pipeline, add steps:
-       - Build application.
-       - Unit tests.
-       - SonarQube check.
-       - Build and push docker image to ECR.
-       - Deploy docker image to Kubernetes cluster.
-    In the deployment stage of your Jenkinsfile, add steps to deploy the application using Helm.
-    Check that the application works as expected.
-    After the deployment, you can add steps to verify that the application is running as expected. This could involve checking the status of the Kubernetes deployment, running integration tests, or hitting a health check endpoint.
+   - Create pipeline, add steps:
+      - Build application.
+      - Unit tests.
+      - SonarQube check.
+      - Build and push docker image to ECR.
+      - Deploy docker image to Kubernetes cluster.
+   - In the deployment stage of your Jenkinsfile, add steps to deploy the application using Helm.
+   - Check that the application works as expected.
+   - After the deployment, you can add steps to verify that the application is running as expected. This could involve checking the status of the Kubernetes deployment, running integration tests, or hitting a health check endpoint.
 
 ## Module 4: Monitoring with Prometheus and Grafana
 Prometheus
