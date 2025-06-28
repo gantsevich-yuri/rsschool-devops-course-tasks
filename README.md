@@ -2,14 +2,16 @@
 
 ## [Task: K8s Cluster Configuration and Creation](https://github.com/rolling-scopes-school/tasks/blob/master/devops/modules/2_cluster-configuration/task_3.md)
 
-**Install k3s as master**
+Use installing packages from terraform code (preferred) or manual installation:
+
+**Manual install k3s as master**
 ```
 sudo curl -Lo /usr/local/bin/k3s https://github.com/k3s-io/k3s/releases/download/v1.26.5+k3s1/k3s; sudo chmod a+x /usr/local/bin/k3s
 sudo k3s server &
 sudo k3s kubectl get node
 ```
 
-**Install k3s as worker**
+**Manual install k3s as worker**
 ```
 sudo curl -Lo /usr/local/bin/k3s https://github.com/k3s-io/k3s/releases/download/v1.26.5+k3s1/k3s; sudo chmod a+x /usr/local/bin/k3s
 # NODE_TOKEN comes from /var/lib/rancher/k3s/server/token on your server
@@ -18,7 +20,7 @@ sudo k3s agent \
   --token <NODE_TOKEN> &
 ```
 
-**Install kubectl**
+**Manual install kubectl**
 ```
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
@@ -27,13 +29,14 @@ kubectl version --client
 
 **Access to Kubernetes cluster from bastion**
 - mkdir ~/.kube
-- ssh <ip_k8s-master> 'sudo cat /etc/rancher/k3s/k3s.yaml' > ~/.kube/config
+- ssh <ip_k8s-master> 'sudo cat /etc/rancher/k3s/k3s.yaml' > ~/.kube/config_k3s
 - ssh ssh -fN -L 6443:<ip_k8s-master>:6443 username_k8s-master@ip_k8s-master    # set ssh tunnel
-- kubectl get nodes
+- KUBECONFIG=~/.kube/config_k3s kubectl get nodes
 
 **Access to Kubernetes cluster from local machine**
-- ssh -i yacloud_k8s -J k3s@158.160.35.0 k3s@10.0.11.12 'sudo cat /etc/rancher/k3s/k3s.yaml' > ~/.kube/config_k3s
-- ssh -fN -L 6443:127.0.0.1:6443 -J k3s@158.160.35.0 k3s@10.0.11.12   # set ssh tunnel
+- mkdir ~/.kube
+- ssh -i <ssh_key> -J <username_bastion_host>@<ip_bastion_host> <username_k3s_master_node>@<ip_k3s_master_node> 'sudo cat /etc/rancher/k3s/k3s.yaml' > ~/.kube/config_k3s
+- ssh -fN -L 6443:localhost:6443 -J <username_bastion>@<ip_bastion> <username_k3s_master_node>@<ip_k3s_master_node>   # set ssh tunnel
 - KUBECONFIG=~/.kube/config_k3s kubectl get nodes
 
 **Deploy pod with Nginx app**
