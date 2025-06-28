@@ -1,97 +1,84 @@
 # RS School DevOps course :fire:
 
-## The goal
+[## Task: K8s Cluster Configuration and Creation](https://github.com/rolling-scopes-school/tasks/blob/master/devops/modules/2_cluster-configuration/task_3.md)
 
-The course aims to offer in-depth knowledge of DevOps principles and essential AWS services necessary for efficient automation and infrastructure management. Participants will gain practical skills in setting up, deploying, and managing Kubernetes clusters on AWS, using tools like K3s and Terraform, Jenkins and monitoring tools.
-Prerequisite:
+**Install k3s as master**
+```
+sudo curl -Lo /usr/local/bin/k3s https://github.com/k3s-io/k3s/releases/download/v1.26.5+k3s1/k3s; sudo chmod a+x /usr/local/bin/k3s
+sudo k3s server &
+sudo k3s kubectl get node
+```
 
-   - Basic knowledge of Cloud computing and networking
-   - Personal laptop
+**Install k3s as worker**
+```
+sudo curl -Lo /usr/local/bin/k3s https://github.com/k3s-io/k3s/releases/download/v1.26.5+k3s1/k3s; sudo chmod a+x /usr/local/bin/k3s
+# NODE_TOKEN comes from /var/lib/rancher/k3s/server/token on your server
+sudo k3s agent \
+  --server https://<MASTER_IP>:6443 \
+  --token <NODE_TOKEN> &
+```
 
-## Module 1: Configuration and Resources
-Part 1 (configuration)
+**Install kubectl**
+```
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+kubectl version --client
+```
 
-   - Install aws cli.
-   - Installation and configuration of Terraform.
-   - Configuring access to AWS via Terraform (API keys, IAM roles).
+**Access to Kubernetes cluster from bastion**
+- mkdir ~/.kube
+- ssh <ip_k8s-master> 'sudo cat /etc/rancher/k3s/k3s.yaml' > ~/.kube/config
+- ssh ssh -fN -L 6443:<ip_k8s-master>:6443 username_k8s-master@ip_k8s-master    # set ssh tunnel
+- kubectl get nodes
 
-Part 2 (resources)
-Option 1 (paid version)
+**Access to Kubernetes cluster from local machine**
+- ssh -i yacloud_k8s -J k3s@158.160.35.0 k3s@10.0.11.12 'sudo cat /etc/rancher/k3s/k3s.yaml' > ~/.kube/config_k3s
+- ssh -fN -L 6443:127.0.0.1:6443 -J k3s@158.160.35.0 k3s@10.0.11.12   # set ssh tunnel
+- KUBECONFIG=~/.kube/config_k3s kubectl get nodes
 
-   - Writing Terraform code for creating VPC with distinct public and private subnets, and route tables.
-   - NAT gateway in the public network.
-   - Creating security groups and rules that correspond to the network architecture and resource distribution across public and private networks.
-   - Describing IAM roles and policies for Kubernetes.
-   - Configuring EC2 instances for Kubernetes nodes.
-   - Setting up EBS volumes and attaching them to instances.
-   - Implementing a bastion host within the public subnet.
-   - Create an S3 bucket in AWS to store the Kops state.
-   - Setting up a DNS record for the Kubernetes cluster (if used).
+**Deploy pod with Nginx app**
+```
+kubectl apply -f https://k8s.io/examples/pods/simple-pod.yaml
+```
+**or Nginx + Services:**
 
-Option 2 (free resources)
+nginx-pod.yaml 
+```
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx
+  labels:
+    app: nginx
+spec:
+  containers:
+  - name: nginx
+    image: nginx:1.14.2
+    ports:
+    - containerPort: 80
+```
 
-   - Writing Terraform code for creating VPC with distinct public and private subnets, and route tables.
-   - NAT instance in the public network.
-   - Creating security groups and rules.
-   - Describing IAM roles and policies for Kubernetes.
-   - Configuring EC2 instances for Kubernetes nodes.
-   - Setting up EBS volumes and attaching them to instances.
-   - Implementing a bastion host within the public subnet.
-   - Create an S3 bucket in AWS to store the Kops state.
+nginx-service.yaml
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-service
+spec:
+  type: NodePort
+  selector:
+    app: nginx
+  ports:
+  - protocol: TCP
+    port: 80        
+    targetPort: 80  
+    nodePort: 30080
+```
 
-## Module 2: Cluster Configuration and Creation
-
-   - Installing K3s on your EC2 instances.
-   - Prepare the K3s cluster configuration.
-   - Applying the K3s configuration using Terraform and K3s setup commands.
-   - Validating the cluster to ensure it's correctly configured and operational.
-   - Check k3s service status.
-   - Get nodes status.
-   - Inspect cluster resources.
-
-## Module 3: Jenkins Server Installation and Configuration
-Part 1 (Installation and configuration Jenkins server)
-
-   - Installation and configuration of Helm, a package manager for Kubernetes.
-   - Configuring and applying the Helm chart to deploy Jenkins in the cluster.
-   - Setting up traffic routing to Jenkins through Ingress or a LoadBalancer.
-   - Accessing the Jenkins interface through a browser.
-   - Installing necessary plugins in Jenkins. (sonarqube, docker).
-   - Set up necessary plugins in Jenkins for Kubernetes like Kubernetes plugin. Configure the plugin with endpoints and credentials for Kubernetes.
-
-Part 2 (Create HELM chart)
-
-   - Create a Helm chart for given application. The chart should contain templates for all necessary Kubernetes resources like Deployments as well as Health checks, liveness, readiness probes.
-   - Check that the application works as expected.
-
-Part 3 (Create Pipeline)
-
-   - Create pipeline, add steps:
-      - Build application.
-      - Unit tests.
-      - SonarQube check.
-      - Build and push docker image to ECR.
-      - Deploy docker image to Kubernetes cluster.
-   - In the deployment stage of your Jenkinsfile, add steps to deploy the application using Helm.
-   - Check that the application works as expected.
-   - After the deployment, you can add steps to verify that the application is running as expected. This could involve checking the status of the Kubernetes deployment, running integration tests, or hitting a health check endpoint.
-
-## Module 4: Monitoring with Prometheus and Grafana
-Prometheus
-
-   - Using Helm to install Prometheus in Kubernetes.
-   - Configuring Prometheus to collect metrics from the cluster.
-   - Creating and configuring Service Monitor to track services in the cluster.
-   - Configuring alert rules in Prometheus for monitoring critical events.
-
-Grafana
-
-   - Deploying Grafana in Kubernetes using Helm.
-   - Setting up secure access to Grafana via Ingress or LoadBalancer.
-   - Configuring Grafana to connect to Prometheus as a data source.
-   - Importing or creating dashboards to visualize metrics from Prometheus.
-
-Alerting Management
-
-   - Conducting tests to verify the collection of metrics and their display in Grafana.
-   - Simulating failures or high loads to test configured alerts.
+**Usefull commands**
+```
+sudo k3s kubectl get nodes
+sudo k3s kubectl get pods -A
+sudo systemctl stop k3s
+/usr/local/bin/k3s-uninstall.sh
+```
