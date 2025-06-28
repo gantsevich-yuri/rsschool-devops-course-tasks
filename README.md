@@ -46,3 +46,6 @@ spec:
 kubectl get nodes
 kubectl get pods -A
 ```
+
+## Result
+[K8s Cluster Configuration and Creation in AWS](https://github.com/gantsevich-yuri/rsschool-devops-course-tasks/pull/3)
