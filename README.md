@@ -40,4 +40,4 @@ minikube ip
 
 ## Result :white_check_mark:
 
-[Jenkins Installation and Configuration](https://github.com/gantsevich-yuri/rsschool-devops-course-tasks/pull/3)
+[Jenkins Installation and Configuration](https://github.com/gantsevich-yuri/rsschool-devops-course-tasks/pull/4)
