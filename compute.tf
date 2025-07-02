@@ -28,6 +28,8 @@ resource "aws_instance" "bastion" {
   user_data = <<-EOF
               #!/bin/bash
               hostnamectl set-hostname bastion
+              curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+              install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
               EOF
 
   tags = {
@@ -35,7 +37,7 @@ resource "aws_instance" "bastion" {
   }
 }
 
-resource "aws_instance" "private_vm1" {
+resource "aws_instance" "k3s_master" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = "t2.micro"
   subnet_id                   = aws_subnet.private1.id
@@ -46,15 +48,16 @@ resource "aws_instance" "private_vm1" {
 
   user_data = <<-EOF
               #!/bin/bash
-              hostnamectl set-hostname vm1-private
+              hostnamectl set-hostname k3s-master
+              curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC='server' K3S_TOKEN=${var.k3s_token} K3S_KUBECONFIG_MODE='644' sh -s -
               EOF
 
   tags = {
-    Name = "Private vm1"
+    Name = "k3s master node"
   }
 }
 
-resource "aws_instance" "private_vm2" {
+resource "aws_instance" "k3s_worker" {
   ami                         = data.aws_ami.ubuntu.id
   instance_type               = "t2.micro"
   subnet_id                   = aws_subnet.private2.id
@@ -65,11 +68,13 @@ resource "aws_instance" "private_vm2" {
 
   user_data = <<-EOF
               #!/bin/bash
-              hostnamectl set-hostname vm2-private
+              hostnamectl set-hostname k3s-worker
+              K3S_URL="https://${aws_instance.k3s_master.private_ip}:6443"
+              curl -sfL https://get.k3s.io | INSTALL_K3S_EXEC="agent --server $K3S_URL --token ${var.k3s_token}" sh -s -
               EOF
 
   tags = {
-    Name = "Private vm2"
+    Name = "k3s worker node"
   }
 }
 
