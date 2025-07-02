@@ -1,54 +1,43 @@
 ## Task :heavy_exclamation_mark:
 
-[K8s Cluster Configuration and Creation](https://github.com/rolling-scopes-school/tasks/blob/master/devops/modules/2_cluster-configuration/task_3.md)
+[Jenkins Installation and Configuration](https://github.com/rolling-scopes-school/tasks/blob/master/devops/modules/3_ci-configuration/task_4.md)
 
 ## Deploy :fast_forward:
 
-**Deploy pod with Nginx app**
-```
-kubectl apply -f https://k8s.io/examples/pods/simple-pod.yaml
-```
-**or Nginx + Services:**
+**Deploy pod from Helm Chart with Nginx app**
 
-nginx-pod.yaml 
-```
-apiVersion: v1
-kind: Pod
-metadata:
-  name: nginx
-  labels:
-    app: nginx
-spec:
-  containers:
-  - name: nginx
-    image: nginx:1.14.2
-    ports:
-    - containerPort: 80
-```
+nginx_values.yaml
 
-nginx-service.yaml
 ```
-apiVersion: v1
-kind: Service
-metadata:
-  name: nginx-service
-spec:
+service:
   type: NodePort
-  selector:
-    app: nginx
   ports:
-  - protocol: TCP
-    port: 80        
-    targetPort: 80  
-    nodePort: 30080
+    http: 80
+    https: 443
+  targetPort:
+    http: http
+    https: https
+```
+
+```
+helm install my-nginx-v1 oci://registry-1.docker.io/bitnamicharts/nginx -f nginx_values.yaml
 ```
 
 **Usefull commands**
 ```
-kubectl get nodes
-kubectl get pods -A
+helm install <release-name>> oci://registry-1.docker.io/bitnamicharts/nginx
+helm install <release-name>> oci://registry-1.docker.io/bitnamicharts/nginx -f <values.yaml>
+helm list
+helm get values <release-name>
+helm uninstall <chart-name>
+
+kubectl get pods
+kubectl get svc
+kubectl get nodes -A
+
+minikube ip
 ```
 
 ## Result :white_check_mark:
 
-[K8s Cluster Configuration and Creation in AWS](https://github.com/gantsevich-yuri/rsschool-devops-course-tasks/pull/3)
+[Jenkins Installation and Configuration](https://github.com/gantsevich-yuri/rsschool-devops-course-tasks/pull/3)
