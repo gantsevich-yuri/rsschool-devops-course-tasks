@@ -9,6 +9,7 @@ The course aims to offer in-depth knowledge of DevOps principles and essential A
   - Personal laptop
 
 **Module 1: Configuration and Resources**
+
 Part 1 (configuration)
 
   - Install aws cli.
@@ -50,6 +51,7 @@ Option 2 (free resources)
   - Inspect cluster resources.
 
 **Module 3: Jenkins Server Installation and Configuration**
+
 Part 1 (Installation and configuration Jenkins server)
 
   - Installation and configuration of Helm, a package manager for Kubernetes.
@@ -77,6 +79,7 @@ Part 3 (Create Pipeline)
     - After the deployment, you can add steps to verify that the application is running as expected. This could involve checking the status of the Kubernetes deployment, running integration tests, or hitting a health check endpoint.
 
 **Module 4: Monitoring with Prometheus and Grafana**
+
 Prometheus
 
   - Using Helm to install Prometheus in Kubernetes.
