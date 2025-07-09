@@ -7,9 +7,6 @@
 **1 Docker artifact**
 ```
 docker build -t my-python-app:v1.1.1 .
-```
-
-```
 docker run -it --rm my-python-app:v1.1.1 /bin/bash     # run and check container
 ```
 
@@ -24,17 +21,15 @@ minikube ssh -- docker images     # Check images
 helm template my-python-app ./my-chart/
 ```
 
-**2 Deploy the Application**
+**4 Deploy the Application**
 ```
 helm install python-app -n my-app-space --create-namespace ./my-chart
 ```
 
-**3 Store Artifacts in Git**
 
 **Usefull commands**
 ```
-helm install [release-name] oci://registry-1.docker.io/bitnamicharts/nginx
-helm install [release-name] oci://registry-1.docker.io/bitnamicharts/nginx -f [values.yaml]
+helm install [release-name] -n [namespace] [chartname]
 helm list
 helm get values [release-name]
 helm uninstall [chart-name]
@@ -52,4 +47,4 @@ kubectl get events -n [namespace]--sort-by=.metadata.creationTimestamp
 
 ## Result :white_check_mark:
 
-[Simple Application Deployment with Helm](https://github.com/gantsevich-yuri/rsschool-devops-course-tasks/pull/4)
+[Simple Application Deployment with Helm](https://github.com/gantsevich-yuri/rsschool-devops-course-tasks/pull/5)
