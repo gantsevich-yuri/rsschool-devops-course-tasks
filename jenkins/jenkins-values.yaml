@@ -409,6 +409,7 @@ controller:
     - workflow-aggregator:608.v67378e9d3db_1
     - git:5.7.0
     - configuration-as-code:1971.vf9280461ea_89
+    - job-dsl:1.93
 
   # If set to false, Jenkins will download the minimum required version of all dependencies.
   # -- Download the minimum required version or latest version of all dependencies
@@ -1262,7 +1263,7 @@ persistence:
   # Requires persistence.enabled: true
   # If defined, PVC must be created manually before volume will be bound
   # -- Provide the name of a PVC
-  existingClaim: jenkins-pvc
+  #existingClaim: jenkins-pvc
 
   # jenkins data Persistent Volume Storage Class
   # If defined, storageClassName: <storageClass>
