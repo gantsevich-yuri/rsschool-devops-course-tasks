@@ -15,10 +15,16 @@ minikube status  # check minikube status
 ```
 helm repo add jenkinsci https://charts.jenkins.io
 helm repo update
+
+minikube ssh
+sudo mkdir -p /data/jenkins-volume/
+sudo chown -R 1000:1000 /data/jenkins-volume/ 
+
 kubectl create namespace jenkins
-kubectl apply -f jenkins/jenkins-01-volume.yaml                                                      # Set PV
-kubectl apply -f jenkins/jenkins-02-sa.yaml                                                          # Create Service Account
+kubectl apply -f jenkins/jenkins-01-volume.yaml                                   # Set PV
+kubectl apply -f jenkins/jenkins-02-sa.yaml                                       # Create Service Account
 helm install jenkins -n jenkins -f jenkins/jenkins-values.yaml jenkinsci/jenkins  # Install pod
+
 ```
 
 **3 SonarQube**
@@ -57,7 +63,7 @@ minikube ip
 
 helm list -n [namespace]
 kubectl get pvc -n [namespace]
-kubectl get events -n [namespace]--sort-by=.metadata.creationTimestamp
+kubectl get events -n [namespace] --sort-by=.metadata.creationTimestamp
 ```
 
 ## Result :white_check_mark:
