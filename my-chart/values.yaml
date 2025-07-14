@@ -1,0 +1,11 @@
+replicaCount: 1
+image:
+  repository: my-python-app
+  tag: v1.1.1
+  pullPolicy: Never
+
+service:
+  type: NodePort
+  port: 80
+  nodePort: 30080
+  targetPort: 8080
