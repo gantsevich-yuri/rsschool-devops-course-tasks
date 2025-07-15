@@ -16,16 +16,26 @@ pipeline {
             }
         }
 
-        stage('Hello') {
+        stage('Build App') {
             steps {
-                echo 'Hello Fox!'
+                sh 'pip install -r requirements.txt'
             }
         }
 
-        stage('Docker biuld') {
+        stage('Test App') {
             steps {
-                sh 'docker build ./my-app/ -t my-flask-app:v$BUILD_NUMBER'
+                sh 'pytest test.py'
             }
         }
+
+        stage('SonarQube test') {
+            //
+        }
+
+        #stage('Docker biuld') {
+        #    steps {
+        #        sh 'docker build ./my-app/ -t my-flask-app:v$BUILD_NUMBER'
+        #    }
+        #}
     }
 }
