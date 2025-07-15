@@ -11,7 +11,38 @@ minikube start
 minikube status  # check minikube status
 ```
 
-**2 Jenkins**
+**2 Build docker image for jenkins agent pod in minikube cluster**
+
+```
+FROM jenkins/inbound-agent:3309.v27b_9314fd1a_4-6
+
+USER root
+RUN apt-get update && apt-get install -y docker.io && rm -rf /var/lib/apt/lists/*
+USER jenkins
+```
+
+build image in minikube cluster
+```
+eval $(minikube docker-env)
+docker build -t  jenkins/inbound-agent:3309.v27b_9314fd1a_4-6_with_docker .
+docker images
+eval $(minikube docker-env -u)
+```
+
+**3 Map docker.sock and use new jenkins image**
+jenkins/jenkins-values.yaml
+```
+agent:
+  image:
+    repository: "jenkins/inbound-agent"
+    tag: "3309.v27b_9314fd1a_4-6_with_docker"
+  volumes:
+    - type: HostPath
+      hostPath: /var/run/docker.sock
+      mountPath: /var/run/docker.sock
+```
+
+**4 Start Jenkins**
 ```
 helm repo add jenkinsci https://charts.jenkins.io
 helm repo update
@@ -27,26 +58,27 @@ helm install jenkins -n jenkins -f jenkins/jenkins-values.yaml jenkinsci/jenkins
 
 ```
 
-**3 SonarQube**
+**5 SonarQube**
 ```
 install and deploy from Helm
 ```
 
-**4 Nexus Registry**
+**6 Nexus Registry**
 ```
 install and deploy from Helm
 ```
 
-**5 CI/CD Pipline**
+**7 CI/CD Pipline**
 ```
 install pipline
 ```
 
-**6 Check Deployment**
+**8 Check Deployment**
 ```
 helm install python-app -n my-app-space --create-namespace ./my-chart
 ```
 
+**9 Extensions**
 
 **Usefull commands**
 ```
