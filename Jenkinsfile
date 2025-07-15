@@ -4,7 +4,7 @@ pipeline {
     triggers {
         pollSCM('H/1 * * * *') 
     }
-    
+
     stages {
          stage('Checkout') {
             steps {
@@ -18,7 +18,7 @@ pipeline {
 
         stage('Hello') {
             steps {
-                echo 'Hello from DevOps course!'
+                echo 'Hello Fox!'
             }
         }
     }
