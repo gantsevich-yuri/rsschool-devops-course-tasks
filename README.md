@@ -24,7 +24,7 @@ USER jenkins
 build image in minikube cluster
 ```
 eval $(minikube docker-env)
-docker build -t  jenkins/inbound-agent:3309.v27b_9314fd1a_4-6_with_docker .
+docker build -t  jenkins/inbound-agent:3309.v27b_9314fd1a_4-6_with_docker_python .
 docker images
 eval $(minikube docker-env -u)
 ```
@@ -35,7 +35,7 @@ jenkins/jenkins-values.yaml
 agent:
   image:
     repository: "jenkins/inbound-agent"
-    tag: "3309.v27b_9314fd1a_4-6_with_docker"
+    tag: "3309.v27b_9314fd1a_4-6_with_docker_python"
   volumes:
     - type: HostPath
       hostPath: /var/run/docker.sock
