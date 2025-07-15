@@ -21,5 +21,11 @@ pipeline {
                 echo 'Hello Fox!'
             }
         }
+
+        stage('Docker biuld') {
+            steps {
+                sh 'docker build ./my-app/ -t my-flask-app:v$BUILD_NUMBER'
+            }
+        }
     }
 }
