@@ -56,7 +56,7 @@ pipeline {
         stage('Test App') {
             steps {
                 container('python') {
-                    sh 'deployment/my-app/test.py'
+                    sh './deployment/my-app/test.py'
                 }
             }
         }
