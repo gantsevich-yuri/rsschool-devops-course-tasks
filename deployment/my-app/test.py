@@ -1,4 +1,4 @@
-from main.py import app
+from main import app
 
 def test_root_route():
     client = app.test_client()
