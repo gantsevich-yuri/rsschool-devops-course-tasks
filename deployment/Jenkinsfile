@@ -1,8 +1,37 @@
 pipeline {
-    agent any
-
     triggers {
         pollSCM('H/1 * * * *') 
+    }
+
+    agent {
+        kubernetes {
+            yaml """
+            apiVersion: v1
+            kind: Pod
+            spec:
+              containers:
+                - name: jnlp
+                  image: jenkins/inbound-agent:3309.v27b_9314fd1a_4-6
+
+                - name: python
+                  image: python:3.13
+                  command: ["cat"]
+                  tty: true
+
+                - name: docker
+                  image: docker:28
+                  command: ["cat"]
+                  tty: true
+                  volumeMounts:
+                    - name: docker-sock
+                      mountPath: /var/run/docker.sock
+              volumes:
+                - name: docker-sock
+                  hostPath:
+                    path: /var/run/docker.sock
+                    type: Socket
+            """
+        }
     }
 
     stages {
@@ -18,15 +47,17 @@ pipeline {
 
         stage('Build App') {
             steps {
-                //sh 'apt install python3-pip'
-                //sh 'pip install --upgrade pip setuptools --break-system-packages && pip install -r requirements.txt --break-system-packages'
-                sh 'pip install -r requirements.txt --break-system-packages'
+                container('python') {
+                    sh 'pip install -r requirements.txt --break-system-packages'
+                }
             }
         }
 
         stage('Test App') {
             steps {
-                sh 'pytest test.py'
+                container('python') {
+                    sh 'pytest test.py'
+                }
             }
         }
         /*
@@ -36,7 +67,9 @@ pipeline {
 
         stage('Docker biuld') {
             steps {
-                sh 'docker build ./my-app/ -t my-flask-app:v$BUILD_NUMBER'
+                container('docker') {
+                    sh 'docker build ./my-app/ -t my-flask-app:v$BUILD_NUMBER'
+                }
             }
         }
         */
