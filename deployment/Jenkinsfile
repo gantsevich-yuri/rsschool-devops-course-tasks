@@ -48,7 +48,7 @@ pipeline {
         stage('Build App') {
             steps {
                 container('python') {
-                    sh 'pip install -r requirements.txt --break-system-packages'
+                    sh 'pip install -r deployment/my-app/requirements.txt --break-system-packages'
                 }
             }
         }
@@ -56,7 +56,7 @@ pipeline {
         stage('Test App') {
             steps {
                 container('python') {
-                    sh 'pytest test.py'
+                    sh 'deployment/my-app/pytest test.py'
                 }
             }
         }
