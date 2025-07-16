@@ -57,7 +57,7 @@ pipeline {
             steps {
                 container('python') {
 		    dir('deployment/my-app') {
-                      sh 'pytest test.py'
+                        sh 'pytest test.py'
 	            }
                 }
             }
