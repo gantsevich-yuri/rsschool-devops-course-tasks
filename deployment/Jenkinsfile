@@ -3,10 +3,6 @@ pipeline {
         pollSCM('H/1 * * * *') 
     }
 
-    tools {
-        sonarQube 'SonarScanner'
-    }
-
     agent {
         kubernetes {
             yaml """
