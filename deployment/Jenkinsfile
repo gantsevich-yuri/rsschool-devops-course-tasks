@@ -62,11 +62,19 @@ pipeline {
                 }
             }
         }
-        /*
-        stage('SonarQube test') {
-            //
-        }
         
+        stage('SonarQube test') {
+            withSonarQubeEnv('jenkins-sonar') {
+                sh """
+                    sonar-scanner \
+                        -Dsonar.projectKey=my-python-app \
+                        -Dsonar.sources=my-app \
+                        -Dsonar.host.url=$SONAR_HOST_URL \
+                        -Dsonar.login=$SONAR_AUTH_TOKEN
+            """
+            }
+        }
+        /*
         stage('Docker biuld') {
             steps {
                 container('docker') {
