@@ -3,6 +3,10 @@ pipeline {
         pollSCM('H/1 * * * *') 
     }
 
+    tools {
+        sonarQube 'SonarScanner'
+    }
+
     agent {
         kubernetes {
             yaml """
@@ -64,18 +68,22 @@ pipeline {
         }
         
         stage('SonarQube test') {
-            steps{
-                withSonarQubeEnv('jenkins-sonar') {
-                    sh """
-                        sonar-scanner \
-                            -Dsonar.projectKey=jenkins-sonar \
-                            -Dsonar.sources=my-app \
-                            -Dsonar.host.url=$SONAR_HOST_URL \
-                            -Dsonar.login=$SONAR_AUTH_TOKEN
-            """
+            steps {
+                container('python') {
+                    withSonarQubeEnv('jenkins-sonar') {
+                        sh '''
+                            apt update && apt install -y unzip wget
+                            wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+                            unzip sonar-scanner-cli-*.zip
+                            mv sonar-scanner-* sonar-scanner
+                            ./sonar-scanner/bin/sonar-scanner \
+                                -Dsonar.projectKey=jenkins-sonar \
+                                -Dsonar.sources=deployment/my-app
+                        '''
+                    }
                 }
             }
-        }
+}
         /*
         stage('Docker biuld') {
             steps {
