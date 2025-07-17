@@ -68,18 +68,20 @@ pipeline {
                 container('python') {
                     withSonarQubeEnv('jenkins-sonar') {
                         sh '''
-                            apt update && apt install -y unzip wget
-                            wget https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
-                            unzip sonar-scanner-cli-*.zip
+                            apt-get update -qq && apt-get install -y --no-install-recommends unzip wget openjdk-17-jre-headless
+                            wget -q https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-5.0.1.3006-linux.zip
+                            unzip -q sonar-scanner-cli-*.zip
                             mv sonar-scanner-* sonar-scanner
-                            ./sonar-scanner/bin/sonar-scanner \
+                            export PATH=$PWD/sonar-scanner/bin:$PATH
+                            sonar-scanner \
                                 -Dsonar.projectKey=jenkins-sonar \
                                 -Dsonar.sources=deployment/my-app
                         '''
                     }
                 }
             }
-}
+        }
+        
         /*
         stage('Docker biuld') {
             steps {
