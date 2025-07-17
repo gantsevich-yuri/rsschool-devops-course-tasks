@@ -68,7 +68,7 @@ pipeline {
                 withSonarQubeEnv('jenkins-sonar') {
                     sh """
                         sonar-scanner \
-                            -Dsonar.projectKey=my-python-app \
+                            -Dsonar.projectKey=jenkins-sonar \
                             -Dsonar.sources=my-app \
                             -Dsonar.host.url=$SONAR_HOST_URL \
                             -Dsonar.login=$SONAR_AUTH_TOKEN
