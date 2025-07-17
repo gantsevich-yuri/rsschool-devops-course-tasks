@@ -59,14 +59,13 @@ helm install jenkins -n jenkins -f jenkins/jenkins-values.yaml jenkinsci/jenkins
 ```
 
 **5 SonarQube**
-```
-install and deploy from Helm
-```
+
+External Server
 
 **6 Nexus Registry**
-```
-install and deploy from Helm
-```
+
+External Server
+
 
 **7 CI/CD Pipline**
 ```
@@ -74,11 +73,8 @@ install pipline
 ```
 
 **8 Check Deployment**
-```
-helm install python-app -n my-app-space --create-namespace ./my-chart
-```
 
-**9 Extensions**
+Check
 
 **Usefull commands**
 ```
