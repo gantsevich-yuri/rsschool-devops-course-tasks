@@ -62,7 +62,7 @@ pipeline {
                 }
             }
         }
-        
+        /*
         stage('SonarQube test') {
             steps {
                 container('python') {
@@ -81,17 +81,21 @@ pipeline {
                 }
             }
         }
-
-        /*
-        stage('Docker biuld') {
+        */
+        stage('Docker biuld and push to Nexus registry') {
             steps {
                 container('docker') {
 		            dir('deployment/my-app') {
-                        sh 'docker build . -t my-flask-app:v$BUILD_NUMBER'
+                        def nexus_srv = '158.160.55.161:8082'
+                        def nexus_repo = 'myrepo'
+                        def image = "${nexus_srv}/${nexus_repo}/my-flask-app:v${BUILD_NUMBER}"
+
+                        sh "docker build -t ${image} ."
+                        sh "echo 'P@ssw0rd_123' | docker login ${nexus_srv} --username admin --password-stdin"
+                        sh "docker push ${image}"
 		            }
                 }
             }
         }
-    */
     }
 }
