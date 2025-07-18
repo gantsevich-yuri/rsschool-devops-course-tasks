@@ -110,7 +110,14 @@ pipeline {
                 '''
             }
         }
-
+        stage('Debug') {
+            steps {
+                sh '''
+                    pwd
+                    ls -la
+                '''
+            }
+        }
         stage('Deploy App to minikube from registry') {
             steps {
                 sh """
