@@ -1,11 +1,11 @@
 replicaCount: 1
 image:
   repository: my-python-app
-  tag: v1.1.1
+  tag: latest
   pullPolicy: Never
 
 service:
   type: NodePort
   port: 80
-  nodePort: 30080
+  nodePort: 30081
   targetPort: 8080
