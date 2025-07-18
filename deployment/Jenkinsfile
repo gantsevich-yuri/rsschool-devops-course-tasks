@@ -62,8 +62,8 @@ pipeline {
                 }
             }
         }
-        /*
-        stage('SonarQube test') {
+        
+        stage('SonarQube test App') {
             steps {
                 container('python') {
                     withSonarQubeEnv('jenkins-sonar') {
@@ -81,7 +81,7 @@ pipeline {
                 }
             }
         }
-        */
+        
         stage('Docker biuld and push to Nexus registry') {
             steps {
                 container('docker') {
