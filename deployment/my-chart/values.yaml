@@ -1,7 +1,7 @@
 replicaCount: 1
 image:
   repository: my-python-app
-  tag: v1.1.1
+  tag: latest
   pullPolicy: Never
 
 service:
