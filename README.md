@@ -92,7 +92,7 @@ sudo systemctl restart docker
 sudo systemctl status docker
 ```
 
-**7 CI/CD Jenkins Pipline**
+**7 CI/CD Jenkins Pipeline**
 
 [Pipeline](https://github.com/gantsevich-yuri/rsschool-devops-course-tasks/blob/task_6/deployment/Jenkinsfile)
 
