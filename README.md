@@ -94,7 +94,7 @@ sudo systemctl status docker
 
 **7 CI/CD Jenkins Pipline**
 
-[Pipline](https://github.com/gantsevich-yuri/rsschool-devops-course-tasks/blob/task_6/deployment/Jenkinsfile)
+[Pipeline](https://github.com/gantsevich-yuri/rsschool-devops-course-tasks/blob/task_6/deployment/Jenkinsfile)
 
 **Usefull commands**
 ```
