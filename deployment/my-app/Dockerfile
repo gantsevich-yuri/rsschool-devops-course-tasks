@@ -8,4 +8,5 @@ ENV FLASK_APP=main.py
 ENV FLASK_RUN_HOST=0.0.0.0
 ENV FLASK_RUN_PORT=8080
 
-CMD ["flask", "run"]
+CMD ["python", "main.py"]
+#CMD ["flask", "run"]
