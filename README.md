@@ -11,7 +11,7 @@ minikube start
 minikube status  # check minikube status
 ```
 
-**2 Map docker.sock**
+**2 Map docker.sock for Jenkins agent in minikube**
 
 jenkins/jenkins-values.yaml
 ```
