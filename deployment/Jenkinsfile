@@ -89,7 +89,7 @@ pipeline {
                         script {
                             def nexus_srv = '158.160.55.161:8082'
                             def nexus_repo = 'myrepo'
-                            def image = "${nexus_srv}/${nexus_repo}/my-flask-app:v${BUILD_NUMBER}"
+                            def image = "${nexus_srv}/${nexus_repo}/my-flask-app"
 
                             sh "docker build -t ${image} ."
                             sh "echo 'P@ssw0rd_123' | docker login http://${nexus_srv} --username admin --password-stdin"
