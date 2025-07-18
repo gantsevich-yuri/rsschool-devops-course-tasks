@@ -87,12 +87,12 @@ pipeline {
                 container('docker') {
 		            dir('deployment/my-app') {
                         script {
-                            def nexus_srv = 'http://158.160.55.161:8082'
+                            def nexus_srv = '158.160.55.161:8082'
                             def nexus_repo = 'myrepo'
                             def image = "${nexus_srv}/${nexus_repo}/my-flask-app:v${BUILD_NUMBER}"
 
                             sh "docker build -t ${image} ."
-                            sh "echo 'P@ssw0rd_123' | docker login ${nexus_srv} --username admin --password-stdin"
+                            sh "echo 'P@ssw0rd_123' | docker login http://${nexus_srv} --username admin --password-stdin"
                             sh "docker push ${image}"
                         }
 		            }
