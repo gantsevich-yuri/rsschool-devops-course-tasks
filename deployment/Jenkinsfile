@@ -122,5 +122,22 @@ pipeline {
                 """
             }
         }
+        stage('Verify App') {
+            steps {
+                sh 'curl -v http://192.168.49.2:30081/'
+            }
+        }
+    }
+    post {
+        success {
+            mail to: 'jura-gan0@mail.ru',
+                 subject: "RESULT OF RELEASE APP",
+                 body: "APP SUCCESSFULLY DEPLOYED!"
+        }
+        failure {
+            mail to: 'jura-gan0@mail.ru',
+                 subject: "RESULT OF RELEASE APP",
+                 body: "ERROR DEPLOY APP!"
+        }
     }
 }
