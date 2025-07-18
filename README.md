@@ -51,18 +51,19 @@ docker build -t [tag] .
 
 **5 SonarQube**
 
-Example deploying SonarQube server in docker container from Ansible
+:heavy_check_mark: Example deploying SonarQube server in docker container from Ansible
 
 [Ansible Playbook SonarQube](https://github.com/gantsevich-yuri/devops-learning/blob/main/sonarqube/ansible/playbook.yaml)
 
 **6 Nexus Registry**
 
-Example deploying Nexus server in docker container from Ansible
+:heavy_check_mark: Example deploying Nexus server in docker container from Ansible
 
 [Ansible Playbook Nexus](https://github.com/gantsevich-yuri/devops-learning/blob/main/nexus/ansible/playbook.yaml)
 
-By default docker push image to nexus by https.
+:heavy_exclamation_mark: By default docker push image to nexus by https.
 If you want to push image by http protocol, you need set ip addr Nexus registry in "insecure-registries".
+
 Example:
 
 ```
@@ -93,7 +94,7 @@ sudo systemctl status docker
 
 **7 CI/CD Jenkins Pipline**
 
-[Piline](https://github.com/gantsevich-yuri/rsschool-devops-course-tasks/blob/task_6/deployment/Jenkinsfile)
+[Pipline](https://github.com/gantsevich-yuri/rsschool-devops-course-tasks/blob/task_6/deployment/Jenkinsfile)
 
 **Usefull commands**
 ```
