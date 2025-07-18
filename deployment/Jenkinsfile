@@ -114,7 +114,7 @@ pipeline {
         stage('Deploy App to minikube from registry') {
             steps {
                 sh """
-                    ./helm upgrade --install release-1 ../../my-chart \
+                    ./helm upgrade --install release-1 my-chart \
                         --namespace jenkins \
                         --set image.repository=158.160.55.161:8082/myrepo/my-flask-app \
                         --set image.pullPolicy=IfNotPresent
