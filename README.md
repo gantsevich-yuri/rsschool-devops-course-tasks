@@ -11,38 +11,21 @@ minikube start
 minikube status  # check minikube status
 ```
 
-**2 Build docker image for jenkins agent pod in minikube cluster**
-
-```
-FROM jenkins/inbound-agent:3309.v27b_9314fd1a_4-6
-
-USER root
-RUN apt-get update && apt-get install -y docker.io && rm -rf /var/lib/apt/lists/*
-USER jenkins
-```
-
-build image in minikube cluster
-```
-eval $(minikube docker-env)
-docker build -t  jenkins/inbound-agent:3309.v27b_9314fd1a_4-6_with_docker_python .
-docker images
-eval $(minikube docker-env -u)
-```
-
-**3 Map docker.sock and use new jenkins image**
+**2 Map docker.sock**
 jenkins/jenkins-values.yaml
 ```
 agent:
   image:
     repository: "jenkins/inbound-agent"
-    tag: "3309.v27b_9314fd1a_4-6_with_docker_python"
+    tag: "3309.v27b_9314fd1a_4-6"
   volumes:
     - type: HostPath
       hostPath: /var/run/docker.sock
       mountPath: /var/run/docker.sock
 ```
 
-**4 Start Jenkins**
+
+**3 Start Jenkins server and agent**
 ```
 helm repo add jenkinsci https://charts.jenkins.io
 helm repo update
@@ -58,23 +41,57 @@ helm install jenkins -n jenkins -f jenkins/jenkins-values.yaml jenkinsci/jenkins
 
 ```
 
+**4 Build docker image with App**
+
+[Dockerfile](https://github.com/gantsevich-yuri/rsschool-devops-course-tasks/blob/task_6/deployment/my-app/Dockerfile)
+```
+docker build -t [tag] .
+```
+
 **5 SonarQube**
 
-External Server
+Example deploying SonarQube server in docker container from Ansible
+[Ansible Playbook SonarQube](https://github.com/gantsevich-yuri/devops-learning/blob/main/sonarqube/ansible/playbook.yaml)
 
 **6 Nexus Registry**
+Example deploying Nexus server in docker container from Ansible
+[Ansible Playbook Nexus](https://github.com/gantsevich-yuri/devops-learning/blob/main/nexus/ansible/playbook.yaml)
 
-External Server
+By default docker push image to nexus by https.
+If you want to push image by http protocol, you need set ip addr Nexus registry in "insecure-registries"
+Example:
 
-
-**7 CI/CD Pipline**
 ```
-install pipline
+sudo mkdir -p /etc/systemd/system/docker.service.d/
+sudo tee /etc/systemd/system/docker.service.d/override.conf <<EOF
+[Service]
+ExecStart=
+ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2376 -H unix:///var/run/docker.sock --default-ulimit=nofile=1048576:1048576 --tlsverify --tlscacert /etc/docker/ca.pem --tlscert /etc/docker/server.pem --tlskey /etc/docker/server-key.pem --label provider=docker
+EOF
+
+
+sudo tee /etc/docker/daemon.json <<EOF
+{
+  "insecure-registries": ["158.160.55.161:8082"],
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "10m",
+    "max-file": "3"
+  },
+  "storage-driver": "overlay2"
+}
+EOF
+
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+sudo systemctl status docker
 ```
 
-**8 Check Deployment**
 
-Check
+**7 CI/CD Jenkins Pipline**
+
+[Piline](https://github.com/gantsevich-yuri/rsschool-devops-course-tasks/blob/task_6/deployment/Jenkinsfile)
+
 
 **Usefull commands**
 ```
