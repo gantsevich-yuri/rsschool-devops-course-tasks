@@ -42,7 +42,6 @@ helm install jenkins -n jenkins -f jenkins/jenkins-values.yaml jenkinsci/jenkins
 
 ```
 
-
 **5 Prometheus**
 
 //
