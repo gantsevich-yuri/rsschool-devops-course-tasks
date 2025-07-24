@@ -151,7 +151,7 @@ pipeline {
                     dir('deployment/monitoring') {
                         sh '''
                         helm upgrade --install my-prometheus prometheus-community/prometheus \
-                        --namespace jenkins \
+                        --namespace monitoring \
                         --create-namespace \
                         --values prometheus-values.yaml
                         '''
@@ -166,7 +166,7 @@ pipeline {
                     dir('deployment/monitoring') {
                         sh '''
                         helm upgrade --install my-grafana grafana/grafana \
-                        --namespace jenkins \
+                        --namespace monitoring \
                         --values grafana-values.yaml
                         '''
                     }
