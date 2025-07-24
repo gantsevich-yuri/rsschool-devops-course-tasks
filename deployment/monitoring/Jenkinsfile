@@ -11,22 +11,24 @@ pipeline {
                 command:
                 - cat
                 tty: true
+              - name: kubectl
+                image: bitnami/kubectl:1.33
+                command:
+                - cat
+                tty: true
             """
         }
     }
-
+    
     stages {
-        stage('Install Helm') {
+        stage('Create Namespace') {
             steps {
-                sh '''
-                curl -LO https://get.helm.sh/helm-v3.18.4-linux-amd64.tar.gz
-                tar -zxvf helm-v3.18.4-linux-amd64.tar.gz
-                mv linux-amd64/helm ./helm
-                chmod +x ./helm
-                '''
+                container('kubectl') {
+                    sh 'kubectl create namespace monitoring --dry-run=client -o yaml | kubectl apply -f -'
+                }
             }
         }
-
+        
         stage('Add Helm Repos') {
             steps {
                 container('helm') {
@@ -35,14 +37,6 @@ pipeline {
                     helm repo add grafana https://grafana.github.io/helm-charts
                     helm repo update
                     '''
-                }
-            }
-        }
-
-        stage('Create Namespace') {
-            steps {
-                container('helm') {
-                    sh 'kubectl create namespace monitoring --dry-run=client -o yaml | kubectl apply -f -'
                 }
             }
         }
