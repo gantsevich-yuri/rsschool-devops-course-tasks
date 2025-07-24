@@ -25,7 +25,7 @@ pipeline {
         stage('Create Namespace') {
             steps {
                 container('kubectl') {
-                    sh 'kubectl create namespace monitoring --dry-run=client -o yaml | kubectl apply -f -'
+                    sh 'kubectl create namespace monitoring'
                 }
             }
         }
