@@ -25,7 +25,7 @@ pipeline {
         stage('Create Namespace') {
             steps {
                 container('kubectl') {
-                    sh 'kubectl create namespace monitoring'
+                    sh 'sh kubectl get ns monitoring || kubectl create namespace monitoring'
                 }
             }
         }
