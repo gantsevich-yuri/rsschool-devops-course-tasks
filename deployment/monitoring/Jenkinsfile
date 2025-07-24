@@ -1,0 +1,41 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Add Helm Repos') {
+            steps {
+                sh '''
+                helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+                helm repo add grafana https://grafana.github.io/helm-charts
+                helm repo update
+                '''
+            }
+        }
+
+        stage('Create Namespace') {
+            steps {
+                sh 'kubectl create namespace monitoring --dry-run=client -o yaml | kubectl apply -f -'
+            }
+        }
+
+        stage('Deploy Prometheus') {
+            steps {
+                sh '''
+                helm upgrade --install my-prometheus prometheus-community/prometheus \
+                  --namespace monitoring \
+                  --values prometheus-values.yaml
+                '''
+            }
+        }
+
+        stage('Deploy Grafana') {
+            steps {
+                sh '''
+                helm upgrade --install my-grafana grafana/grafana \
+                  --namespace monitoring \
+                  --values grafana-values.yaml
+                '''
+            }
+        }
+    }
+}
