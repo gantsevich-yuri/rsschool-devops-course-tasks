@@ -7,7 +7,7 @@ pipeline {
             spec:
               containers:
               - name: helm
-                image: alpine/helm:3.18.3
+                image: bitnami/kubectl:1.33
                 command:
                 - cat
                 tty: true
@@ -16,6 +16,17 @@ pipeline {
     }
 
     stages {
+        stage('Install Helm') {
+            steps {
+                sh '''
+                curl -LO https://get.helm.sh/helm-v3.18.4-linux-amd64.tar.gz
+                tar -zxvf helm-v3.18.4-linux-amd64.tar.gz
+                mv linux-amd64/helm ./helm
+                chmod +x ./helm
+                '''
+            }
+        }
+        
         stage('Add Helm Repos') {
             steps {
                 container('helm') {
