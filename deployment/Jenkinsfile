@@ -2,7 +2,6 @@ pipeline {
     triggers {
         pollSCM('H/1 * * * *') 
     }
-
     agent {
         kubernetes {
             yaml """
@@ -30,6 +29,10 @@ pipeline {
                   image: lachlanevenson/k8s-helm:v3.10.2
                   command: ["cat"]
                   tty: true
+                - name: kubectl
+                  image: bitnami/kubectl:1.33
+                  command: ["cat"]
+                  tty: true
               volumes:
                 - name: docker-sock
                   hostPath:
@@ -40,6 +43,7 @@ pipeline {
     }
 
     stages {
+        /*
         stage('Checkout') {
             steps {
                 git(
@@ -49,7 +53,7 @@ pipeline {
                 )
             }
         }
-        /*
+        
         stage('Build App') {
             steps {
                 container('python') {
@@ -132,7 +136,7 @@ pipeline {
                 sh 'curl -v http://192.168.49.2:30081/'
             }
         }
-        */
+        
         stage('Add Helm Repos') {
             steps {
                 container('helm') {
@@ -154,6 +158,31 @@ pipeline {
                         --namespace monitoring \
                         --create-namespace \
                         --values prometheus-values.yaml
+                        '''
+                    }
+                }
+            }
+        }
+        */
+        stage('Deploy Mailhog') {
+            steps {
+                container('kubectl') {
+                    dir('deployment/monitoring') {
+                        sh 'kubectl apply -f mailhog.yaml'
+                    }
+                }
+            }
+        }
+        
+        stage('Configure Grafana Alerts') {
+            steps {
+                container('kubectl') {
+                    dir('deployment/monitoring') {
+                        sh '''
+                        kubectl create configmap grafana-alerting \
+                            --from-file=contact-points.yaml \
+                            --from-file=alert-rules.yaml \
+                            -n monitoring --dry-run=client -o yaml | kubectl apply -f -
                         '''
                     }
                 }
