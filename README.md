@@ -103,4 +103,4 @@ kubectl get events -n [namespace] --sort-by=.metadata.creationTimestamp
 
 ## Result :white_check_mark:
 
-[Simple Application Deployment with Helm](https://github.com/gantsevich-yuri/rsschool-devops-course-tasks/pull/7)
+[Prometheus Deployment on K8s/minikube](https://github.com/gantsevich-yuri/rsschool-devops-course-tasks/pull/7)
