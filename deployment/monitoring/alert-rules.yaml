@@ -1,6 +1,7 @@
 apiVersion: 1
 groups:
   - name: pod-cpu-alerts
+    folder: "my_folder"  
     interval: 1m
     rules:
       - uid: high-cpu-pod
