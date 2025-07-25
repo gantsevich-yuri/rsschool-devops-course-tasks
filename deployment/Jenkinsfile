@@ -29,10 +29,6 @@ pipeline {
                   image: lachlanevenson/k8s-helm:v3.10.2
                   command: ["cat"]
                   tty: true
-                - name: kubectl
-                  image: bitnami/kubectl:1.33
-                  command: ["cat"]
-                  tty: true
               volumes:
                 - name: docker-sock
                   hostPath:
