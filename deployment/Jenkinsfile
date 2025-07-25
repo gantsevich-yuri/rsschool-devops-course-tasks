@@ -181,7 +181,7 @@ pipeline {
             steps {
                 container('kubectl') {
                     dir('deployment/monitoring') {
-                        sh 'kubectl apply -f mailhog.yaml'
+                        sh 'kubectl apply -f mailhog.yaml -n monitoring'
                     }
                 }
             }
