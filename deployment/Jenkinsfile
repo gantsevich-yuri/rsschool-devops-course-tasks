@@ -52,7 +52,7 @@ pipeline {
                 )
             }
         }
-        /*
+        
         stage('Build App') {
             steps {
                 container('python') {
@@ -135,7 +135,7 @@ pipeline {
                 sh 'curl -v http://192.168.49.2:30081/'
             }
         }
-        */
+        
         stage('Add Helm Repos') {
             steps {
                 container('helm') {
