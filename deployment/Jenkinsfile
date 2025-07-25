@@ -163,6 +163,20 @@ pipeline {
             }
         }
         */
+        stage('Debug kubectl') {
+            steps {
+                container('kubectl') {
+                    sh 'kubectl version --short'
+                }
+            }
+        }
+        stage('Debug kubectl access') {
+            steps {
+                container('kubectl') {
+                    sh 'kubectl get pods -A'
+                }
+            }
+        }
         stage('Deploy Mailhog') {
             steps {
                 container('kubectl') {
