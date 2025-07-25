@@ -172,7 +172,7 @@ pipeline {
                 }
             }
         }
-        
+        /*
         stage('Configure Grafana Alerts') {
             steps {
                 container('kubectl') {
@@ -187,7 +187,7 @@ pipeline {
                 }
             }
         }
-        
+        */
         stage('Deploy Grafana') {
             steps {
                 container('helm') {
