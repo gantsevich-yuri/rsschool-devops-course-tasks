@@ -43,7 +43,6 @@ pipeline {
     }
     
     stages {
-        /*
         stage('Checkout') {
             steps {
                 git(
@@ -53,6 +52,7 @@ pipeline {
                 )
             }
         }
+        /*
         stage('Build App') {
             steps {
                 container('python') {
