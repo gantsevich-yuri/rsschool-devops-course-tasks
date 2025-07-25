@@ -1,7 +1,7 @@
 apiVersion: 1
 groups:
   - name: pod-cpu-alerts
-    folder: "my_folder"  
+    folder: "General"
     interval: 1m
     rules:
       - uid: high-cpu-pod
@@ -10,6 +10,9 @@ groups:
         data:
           - refId: A
             datasourceUid: prometheus
+            relativeTimeRange:
+              from: 300
+              to: 0
             model:
               expr: 100 - (avg by(pod) (rate(node_cpu_seconds_total{mode="idle", pod="release-1-my-chart-85c54f7cd4-9k9g5"}[1m])) * 100)
               format: time_series
