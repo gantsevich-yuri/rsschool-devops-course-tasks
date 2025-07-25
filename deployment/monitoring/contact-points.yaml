@@ -1,0 +1,7 @@
+apiVersion: 1
+contactPoints:
+  - orgId: 1
+    name: email-notify
+    type: email
+    settings:
+      addresses: jura-gan0@mail.ru

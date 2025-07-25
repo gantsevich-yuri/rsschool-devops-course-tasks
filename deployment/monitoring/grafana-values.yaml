@@ -1,0 +1,34 @@
+admin:
+  existingSecret: grafana-admin-secret
+  userKey: username
+  passwordKey: password
+
+service:
+  type: NodePort
+
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        access: proxy
+        url: http://my-prometheus-server.monitoring.svc.cluster.local
+        isDefault: true
+        editable: true
+
+smtp:
+  enabled: true
+  host: mailhog.monitoring.svc.cluster.local:1025
+  user: ""
+  password: ""
+  fromAddress: my-grafana@fox.local
+  fromName: Grafana
+  skipVerify: true
+
+env:
+  GF_SMTP_ENABLED: "true"
+  GF_SMTP_HOST: "mailhog.monitoring.svc.cluster.local:1025"
+  GF_SMTP_FROM_ADDRESS: "my-grafana@fox.local"
+  GF_SMTP_FROM_NAME: "Grafana"
+  GF_SMTP_SKIP_VERIFY: "true"
