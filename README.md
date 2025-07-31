@@ -1,106 +1,100 @@
-## Task :heavy_exclamation_mark:
+## :star: DevOps Course 
+The goal:
 
-[Prometheus Deployment on K8s/minikube](https://github.com/rolling-scopes-school/tasks/blob/master/devops/modules/4_monitoring-configuration/task_7.md)
+The course aims to offer in-depth knowledge of DevOps principles and essential AWS services necessary for efficient automation and infrastructure management. Participants will gain practical skills in setting up, deploying, and managing Kubernetes clusters on AWS, using tools like K3s and Terraform, Jenkins and monitoring tools.
 
-## Deploy :fast_forward:
+**:warning: Prerequisite** 
 
-**1 Start minikube**
+  - Basic knowledge of Cloud computing and networking
+  - Personal laptop
 
-```
-minikube start
-minikube status  # check minikube status
-```
+**:white_check_mark: Module 1: Configuration and Resources** 
 
-**2 Map docker.sock for Jenkins agent in minikube**
+Part 1 (configuration)
 
-jenkins/jenkins-values.yaml
-```
-agent:
-  image:
-    repository: "jenkins/inbound-agent"
-    tag: "3309.v27b_9314fd1a_4-6"
-  volumes:
-    - type: HostPath
-      hostPath: /var/run/docker.sock
-      mountPath: /var/run/docker.sock
-```
+  - Install aws cli.
+  - Installation and configuration of Terraform.
+  - Configuring access to AWS via Terraform (API keys, IAM roles).
 
+Part 2 (resources)
+Option 1 (paid version)
 
-**3 Start Jenkins server and agent**
+  - Writing Terraform code for creating VPC with distinct public and private subnets, and route tables.
+  - NAT gateway in the public network.
+  - Creating security groups and rules that correspond to the network architecture and resource distribution across public and private networks.
+  - Describing IAM roles and policies for Kubernetes.
+  - Configuring EC2 instances for Kubernetes nodes.
+  - Setting up EBS volumes and attaching them to instances.
+  - Implementing a bastion host within the public subnet.
+  - Create an S3 bucket in AWS to store the Kops state.
+  - Setting up a DNS record for the Kubernetes cluster (if used).
 
-```
-helm repo add jenkinsci https://charts.jenkins.io
-helm repo update
+Option 2 (free resources)
 
-minikube ssh
-sudo mkdir -p /data/jenkins-volume/
-sudo chown -R 1000:1000 /data/jenkins-volume/ 
+  - Writing Terraform code for creating VPC with distinct public and private subnets, and route tables.
+  - NAT instance in the public network.
+  - Creating security groups and rules.
+  - Describing IAM roles and policies for Kubernetes.
+  - Configuring EC2 instances for Kubernetes nodes.
+  - Setting up EBS volumes and attaching them to instances.
+  - Implementing a bastion host within the public subnet.
+  - Create an S3 bucket in AWS to store the Kops state.
 
-kubectl create namespace jenkins
-kubectl apply -f jenkins/jenkins-01-volume.yaml                                   # Set PV
-kubectl apply -f jenkins/jenkins-02-sa.yaml                                       # Create Service Account
-helm install jenkins -n jenkins -f jenkins/jenkins-values.yaml jenkinsci/jenkins  # Install pod
+**:white_check_mark: Module 2: Cluster Configuration and Creation**
 
-```
+  - Installing K3s on your EC2 instances.
+  - Prepare the K3s cluster configuration.
+  - Applying the K3s configuration using Terraform and K3s setup commands.
+  - Validating the cluster to ensure it's correctly configured and operational.
+  - Check k3s service status.
+  - Get nodes status.
+  - Inspect cluster resources.
 
-**4 Prometheus**
+**:white_check_mark: Module 3: Jenkins Server Installation and Configuration**
 
-Manual installation or from [Pipeline](https://github.com/gantsevich-yuri/rsschool-devops-course-tasks/blob/task_7/deployment/Jenkinsfile)
-```
-kubectl create namespace monitoring
+Part 1 (Installation and configuration Jenkins server)
 
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm repo update
-helm install my-prometheus prometheus-community/prometheus -n monitoring
+  - Installation and configuration of Helm, a package manager for Kubernetes.
+  - Configuring and applying the Helm chart to deploy Jenkins in the cluster.
+  - Setting up traffic routing to Jenkins through Ingress or a LoadBalancer.
+  - Accessing the Jenkins interface through a browser.
+  - Installing necessary plugins in Jenkins. (sonarqube, docker).
+  - Set up necessary plugins in Jenkins for Kubernetes like Kubernetes plugin. Configure the plugin with endpoints and credentials for Kubernetes.
 
+Part 2 (Create HELM chart)
 
-kubectl -n monitoring edit svc my-prometheus-server
-spec:
-  type: NodePort
-minikube service list
-```
+  - Create a Helm chart for given application. The chart should contain templates for all necessary Kubernetes resources like Deployments as well as Health checks, liveness, readiness probes.
+  - Check that the application works as expected.
 
-**5 Grafana**
+Part 3 (Create Pipeline)
+    
+  - Create pipeline, add steps:
+    - Build application.
+    - Unit tests.
+    - SonarQube check.
+    - Build and push docker image to ECR.
+    - Deploy docker image to Kubernetes cluster.
+  - In the deployment stage of your Jenkinsfile, add steps to deploy the application using Helm.
+  - Check that the application works as expected.
+  - After the deployment, you can add steps to verify that the application is running as expected. This could involve checking the status of the Kubernetes deployment, running integration tests, or hitting a health check endpoint.
 
-```
-helm repo add grafana https://grafana.github.io/helm-charts
-helm repo update
-helm install my-grafana grafana/grafana -n monitoring
+**:white_check_mark: Module 4: Monitoring with Prometheus and Grafana**
 
-kubectl -n monitoring edit svc my-grafana
-spec:
-  type: NodePort
-minikube service list
+Prometheus
 
-kubectl get secret --namespace monitoring my-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo  # Get admin password
-```
+  - Using Helm to install Prometheus in Kubernetes.
+  - Configuring Prometheus to collect metrics from the cluster.
+  - Creating and configuring Service Monitor to track services in the cluster.
+  - Configuring alert rules in Prometheus for monitoring critical events.
 
-**6 Add MailHog in Grafana**
+Grafana
 
-[SMTP config](https://github.com/gantsevich-yuri/rsschool-devops-course-tasks/blob/task_7/deployment/monitoring/grafana-values.yaml) 
+  - Deploying Grafana in Kubernetes using Helm.
+  - Setting up secure access to Grafana via Ingress or LoadBalancer.
+  - Configuring Grafana to connect to Prometheus as a data source.
+  - Importing or creating dashboards to visualize metrics from Prometheus.
 
-**7 CI/CD Jenkins Pipeline**
+Alerting Management
 
-[Pipeline](https://github.com/gantsevich-yuri/rsschool-devops-course-tasks/blob/task_7/deployment/Jenkinsfile)
-
-**Usefull commands**
-```
-helm install [release-name] -n [namespace] [chartname]
-helm list
-helm get values [release-name]
-helm uninstall [chart-name]
-
-kubectl get pods
-kubectl get svc
-kubectl get nodes -A
-
-minikube ip
-
-helm list -n [namespace]
-kubectl get pvc -n [namespace]
-kubectl get events -n [namespace] --sort-by=.metadata.creationTimestamp
-```
-
-## Result :white_check_mark:
-
-[Prometheus Deployment on K8s/minikube](https://github.com/gantsevich-yuri/rsschool-devops-course-tasks/pull/7)
+  - Conducting tests to verify the collection of metrics and their display in Grafana.
+  - Simulating failures or high loads to test configured alerts.
